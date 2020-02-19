@@ -1,4 +1,4 @@
-(defsystem "jsown-wrap"
+(defsystem "jsown-obj"
   :version "0.1.0"
   :author "Joel Reymont"
   :license "LGPL"

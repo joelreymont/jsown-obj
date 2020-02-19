@@ -1,4 +1,4 @@
-(in-package :jsown-wrap)
+(in-package :jsown-obj)
 
 (defvar *readers* (make-hash-table :test 'equal))
 (defvar *writers* (make-hash-table :test 'equal))
@@ -88,7 +88,9 @@
     (let ((extras (when (and js-type parse)
                     `((save-reader ,js-type #',(slot-reader-name `,name)))
                     ))
-          (writer (slot-writer-name name)))
+          (writer (slot-writer-name name))
+          (reader (slot-reader-name name)))
+      (export `(,reader ,writer))
       `(progn
          ,(make-spec `,name `,slots)
          ,(make-reader `,name `,slots)
@@ -131,5 +133,5 @@
 (defun read-string-array ()
   (read-array #'identity))
 
-(defun read-msg-array ()
+(defun read-obj-array ()
   (read-array #'from-json))
