@@ -65,6 +65,10 @@
          self)
        )))
 
+(defun accessors (name slots)
+  (loop for slot in slots
+        collect (slot-accessor-name name (car slot))))
+
 ;;; Declare messages and helpers
 
 (defun make-spec (name slots)
@@ -88,9 +92,11 @@
     (let ((extras (when (and js-type parse)
                     `((save-reader ,js-type #',(slot-reader-name `,name)))
                     ))
+          (maker (maker-name name))
           (writer (slot-writer-name name))
-          (reader (slot-reader-name name)))
-      (export `(,reader ,writer))
+          (reader (slot-reader-name name))
+          (accessors (accessors name slots)))
+      (export `(,maker ,reader ,writer ,@accessors))
       `(progn
          ,(make-spec `,name `,slots)
          ,(make-reader `,name `,slots)
