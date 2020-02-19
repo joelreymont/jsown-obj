@@ -96,7 +96,7 @@
           (writer (slot-writer-name name))
           (reader (slot-reader-name name))
           (accessors (accessors name slots)))
-      (export `(,maker ,reader ,writer ,@accessors))
+      (export `(,name ,maker ,reader ,writer ,@accessors))
       `(progn
          ,(make-spec `,name `,slots)
          ,(make-reader `,name `,slots)
