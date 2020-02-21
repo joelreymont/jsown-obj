@@ -95,14 +95,15 @@
           (maker (maker-name name))
           (writer (slot-writer-name name))
           (reader (slot-reader-name name))
-          (accessors (accessors name slots)))
-      (export `(,name ,maker ,reader ,writer ,@accessors))
+          (accessors (map 'list (lambda (x) `(quote ,x)) (accessors name slots))))
       `(progn
          ,(make-spec `,name `,slots)
          ,(make-reader `,name `,slots)
          ,(make-writer `,name `,slots `,js-type)
          (save-writer ',name #',writer)
          ,@extras
+         (eval-when (:compile-toplevel :load-toplevel :execute)
+           (export (list ',name ',maker ',reader ',writer ,@accessors)))
          ))))
 
 (defun from-json (js-obj)
